@@ -212,26 +212,26 @@
         }
 
         /* --- IMAGES (HERO BANNER) --- */
-        .hero-banner {
-            width: 100%;
-            height: 300px; /* Fixed height for uniformity */
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            background-color: var(--secondary);
-            border: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        /* --- IMAGES (HERO BANNER) --- */
+.hero-banner {
+    width: 100%;
+    height: auto; /* changed from 300px to auto so it doesn't force a crop */
+    min-height: 200px; /* ensures it has some size while loading */
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background-color: var(--secondary);
+    border: 1px solid #e2e8f0;
+    display: block; /* changed from flex to block */
+}
 
-        .hero-banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures image fills box without stretching */
-            object-position: center;
-        }
+.hero-banner img {
+    width: 100%;
+    height: auto; /* allows height to adjust proportionally */
+    display: block; /* removes the tiny whitespace gap at the bottom of images */
+    object-fit: contain; /* ensures the entire image is always visible */
+}
 
         /* --- TYPOGRAPHY --- */
         h1, h2, h3, h4 {
@@ -403,7 +403,6 @@
             .page-container { margin: 0; padding: 0; width: 100%; max-width: none; box-shadow: none; }
             body { background: white; }
             h1 { -webkit-text-fill-color: black; background: none; color: black; }
-            .hero-banner { height: 150px; } /* Smaller image for print */
             .page-break { page-break-before: always; }
             .split-view { display: block; border: none; }
             .split-left, .split-right { padding: 0; border: none; margin-bottom: 1rem; }
@@ -838,4 +837,5 @@ end</pre>
 
 </body>
 </html>
+
 
