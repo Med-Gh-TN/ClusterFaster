@@ -36,7 +36,6 @@
 
         /* --- LAYOUT CONTAINER --- */
         .page-container {
-            max-width: 210mm; /* A4 width */
             margin: 2rem auto;
             background: var(--bg-paper);
             padding: 2.5rem; /* Margins for readabilty */
@@ -175,14 +174,249 @@
             /* Hide placeholder image to save ink if strictly text needed, but keeping per request */
             .page-break { page-break-before: always; }
         }
+
+        /* --- CORE VARIABLES & RESET --- */
+        :root {
+            --primary: #2563eb;       /* Blue-600 */
+            --primary-dark: #1e40af;  /* Blue-800 */
+            --secondary: #0f172a;     /* Slate-900 */
+            --accent: #d946ef;        /* Fuchsia-500 */
+            --accent-dark: #a21caf;   /* Fuchsia-700 */
+            --text-dark: #334155;
+            --text-light: #f8fafc;
+            --bg-paper: #ffffff;
+            --bg-body: #f1f5f9;
+            --success: #10b981;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: var(--bg-body);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* --- LAYOUT CONTAINER --- */
+        .page-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            background: var(--bg-paper);
+            padding: 3rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-radius: 12px;
+        }
+
+        /* --- IMAGES (HERO BANNER) --- */
+        .hero-banner {
+            width: 100%;
+            height: 300px; /* Fixed height for uniformity */
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background-color: var(--secondary);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures image fills box without stretching */
+            object-position: center;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4 {
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            letter-spacing: -0.05em;
+            line-height: 1;
+            background: -webkit-linear-gradient(0deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            border-left: 5px solid var(--accent);
+            padding-left: 1rem;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            color: var(--primary-dark);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        p { margin-bottom: 1rem; text-align: justify; color: #475569; }
+
+        /* --- METADATA BOX --- */
+        .metadata-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        .meta-item strong {
+            display: block;
+            color: #64748b;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        .meta-item span {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        /* --- SPLIT VIEW (TECH STACK) --- */
+        .split-view {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .split-left {
+            background: #f1f5f9;
+            padding: 2rem;
+            border-right: 1px solid #cbd5e1;
+        }
+        .split-right {
+            background: #fff;
+            padding: 2rem;
+        }
+        .tech-item { margin-bottom: 1.5rem; }
+        .tech-item:last-child { margin-bottom: 0; }
+        .tech-name { 
+            font-weight: 700; 
+            color: var(--primary); 
+            font-size: 1rem;
+        }
+        .text-sm { font-size: 0.85rem; color: #64748b; }
+        .tech-arg { 
+            font-style: italic; 
+            color: #475569; 
+            padding-left: 1rem;
+            border-left: 3px solid var(--success); 
+        }
+
+        /* --- CODE BLOCKS (FIXED) --- */
+        .code-container {
+            background: var(--secondary);
+            color: #e2e8f0;
+            border-radius: 8px;
+            margin: 1.5rem 0 2.5rem 0;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* THE FIX: We add top padding to the content so it doesn't hit the label */
+        .code-container pre {
+            white-space: pre-wrap;
+            word-break: break-all;
+            padding: 2.5rem 1.5rem 1.5rem 1.5rem; /* Top padding increased */
+            line-height: 1.5;
+        }
+
+        .file-path {
+            background: var(--accent);
+            color: white;
+            padding: 0.35rem 1rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            font-family: var(--font-main);
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-bottom-right-radius: 8px;
+            z-index: 10; /* Ensures it sits on top */
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .step-explanation {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 1rem;
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* --- TERMINAL SIMULATION --- */
+        .sim-terminal {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: var(--font-mono);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+        .sim-prompt { margin-bottom: 0.5rem; }
+        .sim-prompt::before { content: "root@cluster-faster:~# "; color: var(--primary); font-weight: bold;}
+        .sim-log { color: #808080; margin-bottom: 0.25rem; display: block; }
+        .sim-success { color: var(--success); font-weight: bold; margin-top: 1rem; display: block;}
+
+        /* --- PRINT SETTINGS --- */
+        @media print {
+            .page-container { margin: 0; padding: 0; width: 100%; max-width: none; box-shadow: none; }
+            body { background: white; }
+            h1 { -webkit-text-fill-color: black; background: none; color: black; }
+            .hero-banner { height: 150px; } /* Smaller image for print */
+            .page-break { page-break-before: always; }
+            .split-view { display: block; border: none; }
+            .split-left, .split-right { padding: 0; border: none; margin-bottom: 1rem; }
+        }
     </style>
 </head>
 <body>
 
     <div class="page-container">
         
-        <div class="placeholder-img">
-            <img src="unnamed.jpg">
+        <div class="hero-banner">
+            <img src="i.jpg">
         </div>
 
         <h1>ClusterFaster</h1>
@@ -604,5 +838,4 @@ end</pre>
     </div>
 
 </body>
-
 </html>
