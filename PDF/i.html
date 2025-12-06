@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClusterFaster - Documentation Technique</title>
+    <style>
+        /* --- CORE VARIABLES & RESET --- */
+        :root {
+            --primary: #2563eb; /* Blue-600 */
+            --secondary: #0f172a; /* Slate-900 */
+            --accent: #d946ef; /* Fuchsia-500 */
+            --text-dark: #1e293b;
+            --text-light: #f8fafc;
+            --bg-paper: #ffffff;
+            --bg-code: #f1f5f9;
+            --success: #22c55e;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: #e2e8f0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* --- LAYOUT CONTAINER --- */
+        .page-container {
+            max-width: 210mm; /* A4 width */
+            margin: 2rem auto;
+            background: var(--bg-paper);
+            padding: 2.5rem; /* Margins for readabilty */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            page-break-after: avoid;
+        }
+
+        h1 { font-size: 2.5rem; text-transform: uppercase; letter-spacing: -0.05em; border-bottom: 4px solid var(--primary); padding-bottom: 0.5rem; }
+        h2 { font-size: 1.75rem; border-left: 6px solid var(--accent); padding-left: 1rem; margin-top: 2.5rem; background: #f8fafc; padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        h3 { font-size: 1.25rem; color: var(--primary); margin-top: 1.5rem; display: flex; align-items: center; }
+        h3::before { content: "►"; margin-right: 0.5rem; font-size: 0.8em; }
+        p { margin-bottom: 1rem; text-align: justify; }
+
+        /* --- HEADER & METADATA --- */
+        .placeholder-img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border: 2px dashed #94a3b8;
+        }
+
+        .metadata-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .meta-item strong { display: block; color: var(--primary); font-size: 0.85rem; text-transform: uppercase; }
+        .meta-item span { font-size: 1.1rem; font-weight: 600; }
+
+        /* --- SPLIT VIEW (TECH STACK) --- */
+        .split-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0; /* Seamless look */
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            page-break-inside: avoid;
+        }
+        .split-left, .split-right { padding: 1.5rem; }
+        .split-left { background: #f1f5f9; border-right: 1px solid #cbd5e1; }
+        .split-right { background: #fff; }
+        .tech-item { margin-bottom: 1.5rem; }
+        .tech-item:last-child { margin-bottom: 0; }
+        .tech-name { font-weight: bold; font-size: 1.1rem; color: var(--secondary); }
+        .tech-arg { font-style: italic; color: #475569; border-left: 3px solid var(--success); padding-left: 0.8rem; }
+
+        /* --- CODE BLOCKS (CRITICAL FOR PRINT) --- */
+        .code-container {
+            background: var(--secondary);
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0 2rem 0;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            position: relative;
+            page-break-inside: avoid; /* Prevent cutting code in half */
+            overflow: hidden; /* No scrollbars for print */
+        }
+        .code-container pre {
+            white-space: pre-wrap; /* Wrap long lines */
+            word-break: break-all; /* Break long words if needed */
+        }
+        .file-path {
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-bottom-right-radius: 6px;
+        }
+        .step-explanation {
+            background: #fff7ed; /* Orange-50 */
+            border-left: 4px solid #f97316;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            page-break-after: avoid;
+        }
+
+        /* --- SIMULATION UI --- */
+        .sim-terminal {
+            background: #000;
+            color: #0f0;
+            font-family: var(--font-mono);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+        .sim-prompt::before { content: "root@cluster-faster:~# "; color: #3b82f6; }
+        .sim-log { color: #94a3b8; margin-top: 0.5rem; }
+        .sim-success { color: #22c55e; font-weight: bold; }
+
+        /* --- PRINT MEDIA QUERY --- */
+        @media print {
+            body { background: white; }
+            .page-container {
+                width: 100%;
+                max-width: none;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+            /* Force background colors to print */
+            h2, .metadata-box, .step-explanation, .split-left, .code-container, .file-path {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            /* Hide placeholder image to save ink if strictly text needed, but keeping per request */
+            .page-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+        
+        <div class="placeholder-img">
+            <img src="image.png">
+        </div>
+
+        <h1>ClusterFaster</h1>
+        <p style="font-size: 1.2rem; color: #64748b; margin-top: -10px; margin-bottom: 2rem;">Infrastructure Big Data Automatisée</p>
+
+        <div class="metadata-box">
+            <div class="meta-item">
+                <strong>Étudiant</strong>
+                <span>Mouhaemd Gharsallah</span>
+            </div>
+            <div class="meta-item">
+                <strong>Groupe / Année</strong>
+                <span>LSI 3 Groupe 2_1 (2025/2026)</span>
+            </div>
+            <div class="meta-item">
+                <strong>Enseignant</strong>
+                <span>Mme Senda Bouaziz</span>
+            </div>
+            <div class="meta-item">
+                <strong>Sujet</strong>
+                <span>Déploiement Automatisé Hadoop/Spark</span>
+            </div>
+        </div>
+
+        <h2>1. Vue d'Ensemble & Problématique</h2>
+        <p>
+            <strong>L'Idée :</strong> ClusterFaster est un "Système d'Exploitation d'Infrastructure". Il transforme un simple ordinateur portable en un cluster Big Data puissant (Hadoop, Spark, ZooKeeper) en un seul clic.
+        </p>
+        <p>
+            <strong>Le Problème Réel :</strong> Installer Hadoop manuellement est un cauchemar pour les étudiants et développeurs. Cela implique de configurer le SSH sans mot de passe, de modifier 10 fichiers XML, de gérer les versions Java et de formater le NameNode. Une seule erreur et rien ne marche.
+        </p>
+        <p>
+            <strong>La Valeur Ajoutée (Extra Value) :</strong> 
+            Notre projet n'installe pas seulement des logiciels ; il construit des <em>machines virtuelles</em> à la volée, configure le réseau interne, établit la sécurité (clés SSH) et déploie une interface Web pour piloter le tout. C'est du <strong>Zero-Touch Provisioning</strong>.
+        </p>
+
+        <h2>2. Architecture & Choix Technologiques</h2>
+        <div class="split-view">
+            <div class="split-left">
+                <div class="tech-item">
+                    <div class="tech-name">Backend: Flask (Python)</div>
+                    <p class="text-sm">Serveur Web léger.</p>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">Async: Celery + Redis</div>
+                    <p class="text-sm">Gestionnaire de tâches en arrière-plan.</p>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">Virtualisation: Vagrant + VirtualBox</div>
+                    <p class="text-sm">Infrastructure as Code (IaC).</p>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">Config: Ansible</div>
+                    <p class="text-sm">Automatisation de l'installation.</p>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="tech-item">
+                    <div class="tech-arg">
+                        Pourquoi ? Parce que Python est la langue native de la Data Science. Flask nous permet d'exposer des API simples sans la lourdeur de Java Spring.
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-arg">
+                        <strong>Argument fort :</strong> Créer 3 VMs prend 5 minutes. Si on le fait dans la requête HTTP principale, le navigateur planterait (timeout). Celery permet de dire "Je m'en occupe" et de rendre la main à l'utilisateur immédiatement.
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-arg">
+                        Indispensable pour la reproductibilité. "Ça marche sur ma machine" n'est plus une excuse. Vagrant garantit que tout le monde a exactement le même réseau (192.168.56.x) et la même RAM.
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-arg">
+                        Les scripts Shell sont fragiles. Ansible est "idempotent" : on peut le lancer 10 fois, il ne cassera rien si c'est déjà installé. C'est la norme industrielle.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>3. Structure du Projet (Windows vs WSL)</h2>
+        <p>Il est crucial de comprendre que ce projet chevauche deux mondes : Windows (qui héberge VirtualBox) et WSL (Linux, où tourne notre code Python).</p>
+        
+        <div style="background: #1e293b; color: white; padding: 1rem; border-radius: 8px; font-family: monospace; white-space: pre;">
+cluster-faster/
+├── backend/                  <-- [WSL] Logique Python
+│   ├── app/                  <-- Code Flask (API + Web)
+│   │   ├── tasks.py          <-- Cerveau de l'automatisation
+│   │   └── templates/        <-- Interface HTML
+│   ├── iac/                  <-- Infrastructure as Code
+│   │   ├── ansible/          <-- Playbooks Hadoop
+│   │   │   └── inventory/hosts.ini
+│   │   └── vagrant/          <-- Fichiers VM générés
+├── frontend/                 <-- Assets UI
+└── requirements.txt          <-- Dépendances Python
+        </div>
+
+        <div class="page-break"></div>
+        <h2>4. Guide de Réalisation (Code Source 100%)</h2>
+
+        <h3>Étape 1 : Le Moteur de Tâches (Le Cerveau)</h3>
+        <div class="step-explanation">
+            <strong>Explication :</strong> C'est le fichier le plus important. Il reçoit l'ordre du site web ("Je veux 3 workers"), génère dynamiquement le fichier de configuration pour Vagrant, lance les machines, vole les clés SSH pour qu'elles puissent se parler, et lance Ansible.
+            <br><em>Ouvrez VS Code dans le dossier <code>backend/app</code>.</em>
+        </div>
+        <div class="code-container">
+            <span class="file-path">backend/app/tasks.py</span>
+<pre>import subprocess
+import os
+import shutil
+from . import celery
+
+# --- CONFIGURATION ---
+WORKING_DIR = '/mnt/c/cluster-infra'
+HOSTS_FILE = 'iac/ansible/inventory/hosts.ini'
+
+def generate_vagrantfile(worker_count):
+    """Writes a Vagrantfile dynamically based on worker count."""
+    config = f"""
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-20.04"
+  config.vm.boot_timeout = 600
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = "3072"
+    vb.cpus = 2
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
+  # Master Node
+  config.vm.define "master" do |master|
+    master.vm.hostname = "master"
+    master.vm.network "private_network", ip: "192.168.56.10"
+    master.vm.provider "virtualbox" do |vb|
+     vb.memory = "4096"
+    end
+  end
+
+  # Dynamic Workers
+  (1..{worker_count}).each do |i|
+    config.vm.define "worker#{{i}}" do |worker|
+      worker.vm.hostname = "worker#{{i}}"
+      worker.vm.network "private_network", ip: "192.168.56.#{{10+i}}"
+    end
+  end
+end
+"""
+    with open(f'{WORKING_DIR}/Vagrantfile', 'w') as f:
+        f.write(config)
+
+def generate_inventory(worker_count):
+    """Writes the Ansible Inventory dynamically."""
+    content = """[master]
+192.168.56.10 ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/cluster_keys/master.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[workers]
+"""
+    for i in range(1, worker_count + 1):
+        ip = f"192.168.56.{10+i}"
+        content += f"{ip} ansible_host={ip} ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/cluster_keys/worker{i}.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'\n"
+
+    content += """
+[hadoop_cluster:children]
+master
+workers
+"""
+    with open(HOSTS_FILE, 'w') as f:
+        f.write(content)
+
+# UPDATED SIGNATURE
+@celery.task(bind=True)
+def install_hadoop_task(self, cluster_size='dev', install_zookeeper=False, install_spark=False, install_jupyter=False):
+    
+    worker_count = 1 
+    if cluster_size == 'dev': worker_count = 2
+    if cluster_size == 'pro': worker_count = 3
+
+    self.update_state(state='PROGRESS', meta={'step': f'📐 Designing Architecture ({cluster_size.upper()})...'})
+    
+    try:
+        generate_vagrantfile(worker_count)
+        generate_inventory(worker_count)
+    except Exception as e:
+        return {'status': 'Failed', 'error': f'Config Error: {str(e)}'}
+
+    self.update_state(state='PROGRESS', meta={'step': '🏗️ Provisioning Virtual Machines...'})
+    try:
+        subprocess.run(['vagrant.exe', 'up'], cwd=WORKING_DIR, capture_output=True, text=True)
+        
+        self.update_state(state='PROGRESS', meta={'step': '🔑 Rotating Security Keys...'})
+        home = os.path.expanduser("~")
+        dest_dir = os.path.join(home, ".ssh", "cluster_keys")
+        os.makedirs(dest_dir, exist_ok=True)
+        
+        shutil.copy2(f"{WORKING_DIR}/.vagrant/machines/master/virtualbox/private_key", f"{dest_dir}/master.pem")
+        os.chmod(f"{dest_dir}/master.pem", 0o600)
+
+        for i in range(1, worker_count + 1):
+            shutil.copy2(f"{WORKING_DIR}/.vagrant/machines/worker{i}/virtualbox/private_key", f"{dest_dir}/worker{i}.pem")
+            os.chmod(f"{dest_dir}/worker{i}.pem", 0o600)
+
+    except Exception as e:
+        return {'status': 'Failed', 'error': f'Provisioning Error: {str(e)}'}
+
+    self.update_state(state='PROGRESS', meta={'step': '🔧 Configuring Software Stack...'})
+    try:
+        # Pass ZK, Spark, AND Jupyter
+        cmd = [
+            'ansible-playbook',
+            '-i', 'iac/ansible/inventory/hosts.ini',
+            'iac/ansible/playbooks/hadoop_install.yml',
+            '--extra-vars', 
+            f'install_zookeeper={str(install_zookeeper).lower()} install_spark={str(install_spark).lower()} install_jupyter={str(install_jupyter).lower()}'
+       ]
+        
+        res = subprocess.run(cmd, capture_output=True, text=True)
+        
+        if res.returncode == 0:
+            return {'status': 'Completed', 'logs': res.stdout}
+        
+        return {'status': 'Failed', 'error': 'Ansible Error', 'logs': res.stderr + res.stdout}
+        
+    except Exception as e:
+        return {'status': 'Failed', 'error': str(e)}
+
+@celery.task(bind=True)
+def destroy_cluster_task(self):
+    self.update_state(state='PROGRESS', meta={'step': '🔥 Destroying Infrastructure...'})
+    try:
+        res = subprocess.run(['vagrant.exe', 'destroy', '-f'], cwd=WORKING_DIR, capture_output=True, text=True)
+        return {'status': 'Destruction Complete', 'logs': res.stdout}
+    except Exception as e:
+        return {'status': 'Failed', 'error': str(e)}</pre>
+        </div>
+
+        <div class="page-break"></div>
+        <h3>Étape 2 : L'Infrastructure Virtuelle (L'Artifact)</h3>
+        <div class="step-explanation">
+            <strong>Explication :</strong> Voici le résultat généré par le code Python ci-dessus. C'est la définition pure de notre infrastructure. Notez l'utilisation d'une boucle Ruby <code>(1..3).each</code> pour créer dynamiquement les workers.
+        </div>
+        <div class="code-container">
+            <span class="file-path">Generated Vagrantfile (Reference)</span>
+<pre>Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-20.04"
+  config.vm.boot_timeout = 600
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = "3072"
+    vb.cpus = 2
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
+  # Master Node
+  config.vm.define "master" do |master|
+    master.vm.hostname = "master"
+    master.vm.network "private_network", ip: "192.168.56.10"
+    master.vm.provider "virtualbox" do |vb|
+      vb.memory = "4096"
+    end
+  end
+
+  # Dynamic Workers
+  (1..3).each do |i|
+    config.vm.define "worker#{i}" do |worker|
+      worker.vm.hostname = "worker#{i}"
+      worker.vm.network "private_network", ip: "192.168.56.#{10+i}"
+    end
+  end
+end</pre>
+        </div>
+
+        <h3>Étape 3 : Configuration Ansible (L'Installateur)</h3>
+        <div class="step-explanation">
+            <strong>Explication :</strong> Une fois les VMs allumées, Ansible entre en jeu. Ce fichier YAML décrit l'état désiré : "Java doit être installé", "Hadoop doit être téléchargé", "Le NameNode doit être formaté".
+        </div>
+        <div class="code-container">
+            <span class="file-path">backend/iac/ansible/playbooks/hadoop_install.yml</span>
+<pre>---
+- name: Setup Hadoop Cluster
+  hosts: all
+  become: yes
+  vars:
+    hadoop_version: "3.3.6"
+    spark_version: "3.5.0"
+    java_home: "/usr/lib/jvm/java-8-openjdk-amd64"
+    hadoop_home: "/usr/local/hadoop"
+    spark_home: "/usr/local/spark"
+    
+  tasks:
+    - name: Update APT Cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Java 8
+      apt:
+        name: openjdk-8-jdk-headless
+        state: present
+
+    - name: Configure /etc/hosts
+      blockinfile:
+        path: /etc/hosts
+        block: |
+          192.168.56.10 master
+          {% for host in groups['workers'] %}
+          {{ hostvars[host]['ansible_host'] }} {{ host }}
+          {% endfor %}
+
+    # ... [Voir source code complet pour les tâches de téléchargement] ...
+    
+    - name: Format NameNode (Master Only)
+      run_once: true
+      command: /usr/local/hadoop/bin/hdfs namenode -format
+      args:
+        creates: /usr/local/hadoop/data/namenode/current
+      when: inventory_hostname == 'master'</pre>
+        </div>
+
+        <div class="page-break"></div>
+        <h3>Étape 4 : L'Interface (Frontend)</h3>
+        <div class="step-explanation">
+            <strong>Explication :</strong> La page Web que l'utilisateur voit. Elle utilise JavaScript pour interroger l'API Flask toutes les 2 secondes (Polling) et mettre à jour le terminal en direct.
+        </div>
+        <div class="code-container">
+            <span class="file-path">backend/app/templates/index.html (Extrait JS)</span>
+<pre>async function startDeployment() {
+    deployBtn.disabled = true;
+    updateStatus('BUILDING');
+    
+    log(`🚀 Initiating ${selectedSize.toUpperCase()} deployment...`, "warning");
+
+    try {
+        const response = await fetch('/api/install-hadoop', { 
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ 
+                size: selectedSize,
+                zookeeper: zookeeperEnabled,
+                spark: sparkEnabled
+            }) 
+        });
+        const data = await response.json();
+        const taskId = data.task_id;
+        
+        const poller = setInterval(async () => {
+            const statusRes = await fetch(`/api/status/${taskId}`);
+            const statusData = await statusRes.json();
+            
+            if (statusData.state === 'SUCCESS') {
+                clearInterval(poller);
+                log("✅ Deployment Complete! Stack is Ready.", "success");
+                updateStatus('ACTIVE');
+            } else {
+                if (statusData.info && statusData.info.step) {
+                   log(`⚙️ ${statusData.info.step}`);
+                }
+            }
+        }, 2000);
+    } catch (error) {
+        log(`❌ Error: ${error.message}`, "error");
+    }
+}</pre>
+        </div>
+
+        <h2>5. Simulation de Déploiement (User Scenario)</h2>
+        <p>Imaginons que nous sommes devant la console ClusterFaster. Voici ce qui se passe.</p>
+
+        <div class="sim-terminal">
+            <div class="sim-prompt">Déploiement initié (Mode: PRO, 3 Workers)</div>
+            <div class="sim-log">⚙️ Designing Architecture (PRO)...</div>
+            <div class="sim-log">⚙️ Vagrantfile generated for 4 nodes (1 Master, 3 Workers).</div>
+            <div class="sim-log">🏗️ Provisioning Virtual Machines... (Cela prend env. 2 minutes)</div>
+            <div class="sim-log">🔑 Rotating Security Keys... (Copie des clés SSH master vers workers)</div>
+            <div class="sim-log">🔧 Configuring Software Stack (Ansible Playbook running...)</div>
+            <div class="sim-log">Installing Java 8... [OK]</div>
+            <div class="sim-log">Formatting HDFS NameNode... [OK]</div>
+            <div class="sim-log">Starting YARN ResourceManager... [OK]</div>
+            <div class="sim-success">✅ Deployment Complete! Cluster is ACTIVE.</div>
+        </div>
+
+        <h3>Test du Système (Calcul de Pi)</h3>
+        <p>Pour vérifier que le cluster calcule vraiment en distribué, nous lançons un job Spark :</p>
+        <div class="sim-terminal">
+            <div class="sim-prompt">/usr/local/spark/bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn --deploy-mode cluster examples/jars/spark-examples*.jar 10</div>
+            <div class="sim-log">... Info Client: Application report for application_170198_001 (state: FINISHED)</div>
+            <div class="sim-success">Pi is roughly 3.141592653589793</div>
+        </div>
+
+        <h3>Destruction</h3>
+        <div class="sim-terminal">
+            <div class="sim-prompt">Destroy Infrastructure</div>
+            <div class="sim-log">🔥 Destroying Infrastructure...</div>
+            <div class="sim-log">Vagrant destroy -f triggered.</div>
+            <div class="sim-log">💀 Infrastructure destroyed. Resources released.</div>
+        </div>
+
+        <div class="page-break"></div>
+        <h2>6. Prérequis & Brainstorming</h2>
+        <p>Pour que quelqu'un d'autre puisse reproduire ce projet, il doit installer ces outils avant de commencer :</p>
+        <ul>
+            <li><strong>VirtualBox 7.0+</strong> (Sur Windows) : C'est l'hyperviseur.</li>
+            <li><strong>Vagrant (Windows)</strong> : Doit être dans le PATH système.</li>
+            <li><strong>WSL 2 (Ubuntu)</strong> : C'est ici que l'on exécute le code Python/Flask.</li>
+            <li><strong>Redis</strong> : Installé dans WSL (<code>sudo apt install redis-server</code>).</li>
+        </ul>
+
+        <div class="step-explanation" style="margin-top: 2rem;">
+            <strong>Commande Finale de Lancement :</strong>
+            <br>
+            Dans WSL, naviguez vers le dossier backend et lancez :
+            <br>
+            <code>python3 run.py</code>
+            <br>
+            Puis dans un autre terminal :
+            <br>
+            <code>celery -A app.celery worker --loglevel=info</code>
+        </div>
+
+    </div>
+
+</body>
+</html>
