@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClusterFaster - Documentation Technique</title>
     <style>
-        /* --- CORE VARIABLES & RESET --- */
+        /* --- 1. CORE VARIABLES & RESET --- */
         :root {
-            --primary: #2563eb; /* Blue-600 */
-            --secondary: #0f172a; /* Slate-900 */
-            --accent: #d946ef; /* Fuchsia-500 */
-            --text-dark: #1e293b;
-            --text-light: #f8fafc;
+            --primary: #2563eb;       /* Blue-600 */
+            --primary-dark: #1e40af;  /* Blue-800 */
+            --secondary: #0f172a;     /* Slate-900 */
+            --accent: #d946ef;        /* Fuchsia-500 */
+            --text-dark: #334155;
             --bg-paper: #ffffff;
-            --bg-code: #f1f5f9;
-            --success: #22c55e;
+            --bg-body: #f1f5f9;
+            --success: #10b981;
             --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+            --font-mono: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
         }
 
         * {
@@ -28,349 +28,174 @@
         body {
             font-family: var(--font-main);
             color: var(--text-dark);
-            line-height: 1.6;
-            background-color: #e2e8f0;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-
-        /* --- LAYOUT CONTAINER --- */
-        .page-container {
-            margin: 2rem auto;
-            background: var(--bg-paper);
-            padding: 2.5rem; /* Margins for readabilty */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        /* --- TYPOGRAPHY --- */
-        h1, h2, h3, h4 {
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--secondary);
-            page-break-after: avoid;
-        }
-
-        h1 { font-size: 2.5rem; text-transform: uppercase; letter-spacing: -0.05em; border-bottom: 4px solid var(--primary); padding-bottom: 0.5rem; }
-        h2 { font-size: 1.75rem; border-left: 6px solid var(--accent); padding-left: 1rem; margin-top: 2.5rem; background: #f8fafc; padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        h3 { font-size: 1.25rem; color: var(--primary); margin-top: 1.5rem; display: flex; align-items: center; }
-        h3::before { content: "►"; margin-right: 0.5rem; font-size: 0.8em; }
-        p { margin-bottom: 1rem; text-align: justify; }
-
-        /* --- HEADER & METADATA --- */
-        .placeholder-img {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            border: 2px dashed #94a3b8;
-        }
-
-        .metadata-box {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        .meta-item strong { display: block; color: var(--primary); font-size: 0.85rem; text-transform: uppercase; }
-        .meta-item span { font-size: 1.1rem; font-weight: 600; }
-
-        /* --- SPLIT VIEW (TECH STACK) --- */
-        .split-view {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0; /* Seamless look */
-            border: 2px solid var(--secondary);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 2rem;
-            page-break-inside: avoid;
-        }
-        .split-left, .split-right { padding: 1.5rem; }
-        .split-left { background: #f1f5f9; border-right: 1px solid #cbd5e1; }
-        .split-right { background: #fff; }
-        .tech-item { margin-bottom: 1.5rem; }
-        .tech-item:last-child { margin-bottom: 0; }
-        .tech-name { font-weight: bold; font-size: 1.1rem; color: var(--secondary); }
-        .tech-arg { font-style: italic; color: #475569; border-left: 3px solid var(--success); padding-left: 0.8rem; }
-
-        /* --- CODE BLOCKS (CRITICAL FOR PRINT) --- */
-        .code-container {
-            background: var(--secondary);
-            color: #e2e8f0;
-            padding: 1rem;
-            border-radius: 6px;
-            margin: 1rem 0 2rem 0;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            position: relative;
-            page-break-inside: avoid; /* Prevent cutting code in half */
-            overflow: hidden; /* No scrollbars for print */
-        }
-        .code-container pre {
-            white-space: pre-wrap; /* Wrap long lines */
-            word-break: break-all; /* Break long words if needed */
-        }
-        .file-path {
-            background: var(--accent);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            font-size: 0.75rem;
-            font-family: var(--font-mono);
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-bottom-right-radius: 6px;
-        }
-        .step-explanation {
-            background: #fff7ed; /* Orange-50 */
-            border-left: 4px solid #f97316;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-            page-break-after: avoid;
-        }
-
-        /* --- SIMULATION UI --- */
-        .sim-terminal {
-            background: #000;
-            color: #0f0;
-            font-family: var(--font-mono);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #333;
-            margin-top: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-        }
-        .sim-prompt::before { content: "root@cluster-faster:~# "; color: #3b82f6; }
-        .sim-log { color: #94a3b8; margin-top: 0.5rem; }
-        .sim-success { color: #22c55e; font-weight: bold; }
-
-        /* --- PRINT MEDIA QUERY --- */
-        @media print {
-            body { background: white; }
-            .page-container {
-                width: 100%;
-                max-width: none;
-                margin: 0;
-                padding: 0;
-                box-shadow: none;
-            }
-            /* Force background colors to print */
-            h2, .metadata-box, .step-explanation, .split-left, .code-container, .file-path {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            /* Hide placeholder image to save ink if strictly text needed, but keeping per request */
-            .page-break { page-break-before: always; }
-        }
-
-        /* --- CORE VARIABLES & RESET --- */
-        :root {
-            --primary: #2563eb;       /* Blue-600 */
-            --primary-dark: #1e40af;  /* Blue-800 */
-            --secondary: #0f172a;     /* Slate-900 */
-            --accent: #d946ef;        /* Fuchsia-500 */
-            --accent-dark: #a21caf;   /* Fuchsia-700 */
-            --text-dark: #334155;
-            --text-light: #f8fafc;
-            --bg-paper: #ffffff;
-            --bg-body: #f1f5f9;
-            --success: #10b981;
-            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: var(--font-main);
-            color: var(--text-dark);
-            line-height: 1.6;
+            line-height: 1.5;
             background-color: var(--bg-body);
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
 
-        /* --- LAYOUT CONTAINER --- */
+        /* --- 2. LAYOUT CONTAINER --- */
         .page-container {
-            margin: 3rem auto;
+            width: 100%;
+            max-width: 210mm; /* A4 Width */
+            margin: 2rem auto;
             background: var(--bg-paper);
-            padding: 3rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 2.5rem; 
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
         }
 
-        /* --- IMAGES (HERO BANNER) --- */
-        /* --- IMAGES (HERO BANNER) --- */
-.hero-banner {
-    width: 100%;
-    height: auto; /* changed from 300px to auto so it doesn't force a crop */
-    min-height: 200px; /* ensures it has some size while loading */
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    background-color: var(--secondary);
-    border: 1px solid #e2e8f0;
-    display: block; /* changed from flex to block */
-}
+        /* --- 3. IMAGES (HERO BANNER) --- */
+        .hero-banner {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+            background: #000;
+        }
+        .hero-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
 
-.hero-banner img {
-    width: 100%;
-    height: auto; /* allows height to adjust proportionally */
-    display: block; /* removes the tiny whitespace gap at the bottom of images */
-    object-fit: contain; /* ensures the entire image is always visible */
-}
-
-        /* --- TYPOGRAPHY --- */
+        /* --- 4. TYPOGRAPHY --- */
         h1, h2, h3, h4 {
             font-weight: 800;
             color: var(--secondary);
             margin-bottom: 0.75rem;
+            page-break-after: avoid; /* Keep headers with text */
         }
 
         h1 {
-            font-size: 3rem;
-            letter-spacing: -0.05em;
-            line-height: 1;
+            font-size: 2.5rem;
+            line-height: 1.1;
             background: -webkit-linear-gradient(0deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            font-size: 1.25rem;
-            color: #64748b;
-            font-weight: 500;
-            margin-bottom: 2.5rem;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 1.5rem;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 1rem;
         }
 
         h2 {
-            font-size: 1.5rem;
-            border-left: 5px solid var(--accent);
+            font-size: 1.6rem;
+            border-left: 6px solid var(--accent);
             padding-left: 1rem;
-            margin-top: 3rem;
-            margin-bottom: 1.5rem;
-            color: var(--secondary);
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
+            background: #f8fafc;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
         }
 
         h3 {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             color: var(--primary-dark);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
+            margin-top: 1.5rem;
             display: flex;
             align-items: center;
         }
         
-        p { margin-bottom: 1rem; text-align: justify; color: #475569; }
+        p { 
+            margin-bottom: 1rem; 
+            text-align: justify; 
+            color: #475569;
+        }
 
-        /* --- METADATA BOX --- */
+        /* --- 5. METADATA BOX --- */
         .metadata-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 1.5rem;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 1.25rem;
             border-radius: 8px;
             margin-bottom: 2rem;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
+            gap: 1rem;
+            page-break-inside: avoid;
         }
         .meta-item strong {
             display: block;
             color: #64748b;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 0.25rem;
         }
         .meta-item span {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--secondary);
         }
 
-        /* --- SPLIT VIEW (TECH STACK) --- */
+        /* --- 6. SPLIT VIEW (TECH STACK) --- */
         .split-view {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
+            display: flex; /* Flex is safer for print than Grid */
+            flex-direction: row;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
             overflow: hidden;
             margin-bottom: 2rem;
+            page-break-inside: avoid; /* Prevent cutting the table in half */
         }
         .split-left {
             background: #f1f5f9;
-            padding: 2rem;
+            padding: 1.5rem;
+            width: 40%;
             border-right: 1px solid #cbd5e1;
         }
         .split-right {
             background: #fff;
-            padding: 2rem;
+            padding: 1.5rem;
+            width: 60%;
         }
-        .tech-item { margin-bottom: 1.5rem; }
-        .tech-item:last-child { margin-bottom: 0; }
-        .tech-name { 
-            font-weight: 700; 
-            color: var(--primary); 
-            font-size: 1rem;
-        }
+        .tech-item { margin-bottom: 1.25rem; }
+        .tech-name { font-weight: 700; color: var(--primary); font-size: 0.95rem; }
         .text-sm { font-size: 0.85rem; color: #64748b; }
         .tech-arg { 
             font-style: italic; 
-            color: #475569; 
-            padding-left: 1rem;
-            border-left: 3px solid var(--success); 
+            color: #334155; 
+            padding-left: 0.75rem;
+            border-left: 3px solid var(--success);
+            font-size: 0.9rem;
         }
 
-        /* --- CODE BLOCKS (FIXED) --- */
+        /* --- 7. CODE BLOCKS (CRITICAL FIXES) --- */
         .code-container {
             background: var(--secondary);
             color: #e2e8f0;
             border-radius: 8px;
-            margin: 1.5rem 0 2.5rem 0;
+            margin: 1.5rem 0 2rem 0;
             font-family: var(--font-mono);
-            font-size: 0.85rem;
+            font-size: 0.8rem; /* Smaller font to prevent cropping */
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            page-break-inside: avoid; /* Don't cut code blocks in half */
         }
 
-        /* THE FIX: We add top padding to the content so it doesn't hit the label */
         .code-container pre {
-            white-space: pre-wrap;
-            word-break: break-all;
-            padding: 2.5rem 1.5rem 1.5rem 1.5rem; /* Top padding increased */
-            line-height: 1.5;
+            white-space: pre-wrap; /* WRAPS TEXT - Prevents cropping */
+            word-break: break-all; /* Breaks long strings/URLs */
+            padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+            line-height: 1.4;
+            tab-size: 2;
         }
 
         .file-path {
             background: var(--accent);
             color: white;
-            padding: 0.35rem 1rem;
-            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.7rem;
             font-weight: bold;
             font-family: var(--font-main);
             position: absolute;
             top: 0;
             left: 0;
             border-bottom-right-radius: 8px;
-            z-index: 10; /* Ensures it sits on top */
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
         }
 
         .step-explanation {
@@ -379,33 +204,80 @@
             padding: 1rem;
             border-radius: 0 4px 4px 0;
             margin-bottom: 0.5rem;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            page-break-inside: avoid;
         }
 
-        /* --- TERMINAL SIMULATION --- */
+        /* --- 8. TERMINAL SIMULATION --- */
         .sim-terminal {
             background: #1e1e1e;
             color: #d4d4d4;
             font-family: var(--font-mono);
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: 8px;
             border: 1px solid #333;
             margin-top: 1rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            font-size: 0.85rem;
+            page-break-inside: avoid;
         }
-        .sim-prompt { margin-bottom: 0.5rem; }
-        .sim-prompt::before { content: "root@cluster-faster:~# "; color: var(--primary); font-weight: bold;}
-        .sim-log { color: #808080; margin-bottom: 0.25rem; display: block; }
-        .sim-success { color: var(--success); font-weight: bold; margin-top: 1rem; display: block;}
+        .sim-prompt::before { content: "root@cluster:~# "; color: var(--primary); font-weight: bold;}
+        .sim-log { color: #9ca3af; display: block; margin-bottom: 0.2rem; }
+        .sim-success { color: var(--success); font-weight: bold; margin-top: 0.5rem; display: block;}
 
-        /* --- PRINT SETTINGS --- */
+        .folder-structure {
+            background: #1e293b; 
+            color: white; 
+            padding: 1.5rem; 
+            border-radius: 8px; 
+            font-family: var(--font-mono); 
+            white-space: pre-wrap; 
+            font-size: 0.85rem;
+            page-break-inside: avoid;
+        }
+
+        /* --- 9. PRINT SPECIFIC OPTIMIZATION --- */
         @media print {
-            .page-container { margin: 0; padding: 0; width: 100%; max-width: none; box-shadow: none; }
-            body { background: white; }
-            h1 { -webkit-text-fill-color: black; background: none; color: black; }
+            @page {
+                size: A4;
+                margin: 15mm; /* Set printer margins */
+            }
+
+            body { 
+                background: white; 
+                font-size: 11pt; /* Optimize font size for paper */
+            }
+
+            .page-container {
+                width: 100%;
+                max-width: none;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+            }
+
+            /* Ensure background colors print */
+            h2, .metadata-box, .step-explanation, .split-left, .code-container, .file-path, .sim-terminal, .folder-structure {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Colors adjustment for ink saving (Optional - currently kept vibrant as requested) */
+            h1 { 
+                -webkit-text-fill-color: black; 
+                background: none; 
+                color: #000;
+                border-bottom: 2px solid #000;
+            }
+
+            /* Force page breaks */
             .page-break { page-break-before: always; }
-            .split-view { display: block; border: none; }
-            .split-left, .split-right { padding: 0; border: none; margin-bottom: 1rem; }
+            
+            /* Prevent orphans */
+            h2, h3 { page-break-after: avoid; }
+            
+            /* Fix Grid/Flex issues on some PDF engines */
+            .split-view { border: 1px solid #ccc; }
         }
     </style>
 </head>
@@ -414,7 +286,8 @@
     <div class="page-container">
         
         <div class="hero-banner">
-            <img src="i.jpg">
+            <!-- Replace 'i.jpg' with your actual image path if available locally -->
+            <img src="i.jpg" alt="ClusterFaster Hero Image">
         </div>
 
         <h1>ClusterFaster</h1>
@@ -498,8 +371,7 @@
         <h2>3. Structure du Projet (Windows vs WSL)</h2>
         <p>Il est crucial de comprendre que ce projet chevauche deux mondes : Windows (qui héberge VirtualBox) et WSL (Linux, où tourne notre code Python).</p>
         
-        <div style="background: #1e293b; color: white; padding: 1rem; border-radius: 8px; font-family: monospace; white-space: pre;">
-cluster-faster/
+        <div class="folder-structure">cluster-faster/
 ├── backend/                  <-- [WSL] Logique Python
 │   ├── app/                  <-- Code Flask (API + Web)
 │   │   ├── tasks.py          <-- Cerveau de l'automatisation
@@ -509,8 +381,7 @@ cluster-faster/
 │   │   │   └── inventory/hosts.ini
 │   │   └── vagrant/          <-- Fichiers VM générés
 ├── frontend/                 <-- Assets UI
-└── requirements.txt          <-- Dépendances Python
-        </div>
+└── requirements.txt          <-- Dépendances Python</div>
 
         <div class="page-break"></div>
         <h2>4. Guide de Réalisation (Code Source 100%)</h2>
@@ -574,7 +445,7 @@ def generate_inventory(worker_count):
 """
     for i in range(1, worker_count + 1):
         ip = f"192.168.56.{10+i}"
-        content += f"{ip} ansible_host={ip} ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/cluster_keys/worker{i}.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'\n"
+        content += f"{ip} ansible_host={ip} ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/cluster_keys/worker{i}.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'\\n"
 
     content += """
 [hadoop_cluster:children]
@@ -837,6 +708,3 @@ end</pre>
 
 </body>
 </html>
-
-
-
